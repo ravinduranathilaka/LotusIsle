@@ -14,6 +14,15 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         //$middleware->append(AdminMiddleware::class);
     })
+    ->withRouteMiddleware([
+        // Laravel's default route middleware
+        'auth' => \App\Http\Middleware\Authenticate::class,
+        'verified' => \App\Http\Middleware\EnsureEmailIsVerified::class,
+
+        // ✅ Your custom middleware for roles
+        'admin' => \App\Http\Middleware\IsAdmin::class,
+        'customer' => \App\Http\Middleware\IsCustomer::class,
+    ])
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })->create();
